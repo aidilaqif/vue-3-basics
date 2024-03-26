@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Vue 3 Basics</title>
+</head>
+<body>
+    <div id="app">
+        <!-- anyting found in {{}} will be identify as Js -->
+        {{greeting}}
+    </div>
+    <!-- script tag to import view n start use app -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        // to create app
+        let app = Vue.createApp({
+            //any var/functions is here
+            data: function(){
+                return{
+                    greeting: 'Hello Vue 3!'
+                }
+            }
+        })
+        //map to div id which is "app"
+        app.mount('#app')
+    </script>
+</body>
+</html>
