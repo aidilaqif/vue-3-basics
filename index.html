@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <title>Vue 3 Basics</title>
 </head>
 <body>
     <div id="app">
-        <!-- anyting found in {{}} will be identify as Js -->
         {{greeting}}
     </div>
     <!-- script tag to import view n start use app -->
-    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         // to create app
         let app = Vue.createApp({
@@ -18,9 +16,15 @@
                 return{
                     greeting: 'Hello Vue 3!'
                 }
-            }
+            },
+            //Define the template
+            template:`
+                <div>
+                    {{ greeting }}
+                </div>
+            `
         })
-        //map to div id which is "app"
+        // Mount the app to the '#app' element
         app.mount('#app')
     </script>
 </body>
