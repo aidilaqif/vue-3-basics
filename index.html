@@ -23,19 +23,49 @@
 <body>
     <div id="app" v-cloak>
         {{greeting}}
-        <!-- 2 way data binding -->
-        <input v-model="greeting"/>
 
+        <!--
+        2 way data binding
+        <input v-model="greeting"/>
+        -->
+
+        <!-- event listening for keyboard input
+        <input @keyup.enter="greet" v-model="greeting" />
+        -->
+
+        <!-- passing variables -->
+        <input @keyup.enter="greet(greeting + '!!!')" v-model="greeting" />
         <hr />
 
-        <!-- just like if statement -->
-        <!-- most cases v-if, want something to render or not, loading spinner -->
-        <!-- v-show, specific cases, toogle something more frequently -->
-        <!-- <div v-show="isVisible" class="box"></div> -->
-        <!-- it will sequentially to display the box -->
+        <!-- ! is use to change to opposite value -->
+
+        <!--
+        method 1
+        <button v-on:click="isVisible = !isVisible">Toggle Box</button>
+        -->
+
+        <!--
+        method 2
+        shorthand to create event, dont need to type v-on:click
+        <button @click="isVisible = !isVisible">Toggle Box</button>
+        -->
+
+        <!-- using method -->
+        <button @click="toggleBox">Toggle Box</button>
+
+        <!--
+        only listening on right click of the mouse
+        <button @click.right="toggleBox">Toggle Box</button>
+        -->
+
+        <!--
+        prevent form from submit or can use prevent.stop
+        <button @click.prevent="toggleBox">Toggle Box</button>
+        -->
+
+        <!-- wont show unless value is change -->
         <div v-if="isVisible" class="box"></div>
-        <div v-else-if="isVisible2" class="box two"></div>
-        <div v-else class="box three"></div>
+
     </div>
     <!-- script tag to import view n start use app -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -47,9 +77,27 @@
                 return{
                     greeting: 'Hello Vue 3!',
                     isVisible: false,
-                    isVisible2: true,
                 }
             },
+            //method to change toggle box button
+            methods: {
+                toggleBox(){
+                    //this. is to get the var
+                    this.isVisible = !this.isVisible
+                },
+
+                /*
+                without passing variables in method parameter
+                greet(){
+                    console.log(this.greeting)
+                }
+                */
+
+                // passing variables
+                greet(greeting) {
+                    console.log(greeting)
+                }
+            }
         })
         // Mount the app to the '#app' element
         app.mount('#app')
