@@ -1,106 +1,80 @@
 <!DOCTYPE html>
-<head>
+    <head>
     <title>Vue 3 Basics</title>
     <style>
-        .box{
-            background-color: purple;
-            height: 200px;
-            width: 200px;
+        .box {
+        background-color: purple;
+        height: 200px;
+        width: 200px;
         }
-        .box.two{
-            background-color: red;
+        .box.two {
+        background-color: red;
         }
-        .box.three{
-            background-color: blue;
+        .box.three {
+        background-color: blue;
         }
-        /* v-cloak basically remain on the div untill the app is loaded and removed when the everything is render into the dom */
-        /* prevent other elements the we dont want to show up */
         [v-cloak] {
-            display: none;
+        display: none;
+        }
+        /* style for input form */
+        input{
+            margin: 10px;
+            display: block;
         }
     </style>
-</head>
-<body>
+    </head>
+    <body>
     <div id="app" v-cloak>
-        {{greeting}}
+        <login-form />
 
-        <!--
-        2 way data binding
-        <input v-model="greeting"/>
-        -->
-
-        <!-- event listening for keyboard input
-        <input @keyup.enter="greet" v-model="greeting" />
-        -->
-
-        <!-- passing variables -->
-        <input @keyup.enter="greet(greeting + '!!!')" v-model="greeting" />
         <hr />
 
-        <!-- ! is use to change to opposite value -->
-
-        <!--
-        method 1
-        <button v-on:click="isVisible = !isVisible">Toggle Box</button>
-        -->
-
-        <!--
-        method 2
-        shorthand to create event, dont need to type v-on:click
-        <button @click="isVisible = !isVisible">Toggle Box</button>
-        -->
-
-        <!-- using method -->
         <button @click="toggleBox">Toggle Box</button>
-
-        <!--
-        only listening on right click of the mouse
-        <button @click.right="toggleBox">Toggle Box</button>
-        -->
-
-        <!--
-        prevent form from submit or can use prevent.stop
-        <button @click.prevent="toggleBox">Toggle Box</button>
-        -->
-
-        <!-- wont show unless value is change -->
         <div v-if="isVisible" class="box"></div>
-
     </div>
-    <!-- script tag to import view n start use app -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
-        // to create app
         let app = Vue.createApp({
-            //any var/functions is here
-            data: function(){
+        data: function () {
+            return {
+            greeting: "Hello Vue 3!",
+            isVisible: false,
+            };
+        },
+        methods: {
+            toggleBox() {
+            this.isVisible = !this.isVisible;
+            },
+            greet(greeting) {
+            console.log(greeting);
+            },
+        },
+        })
+
+        app.component('login-form',{
+            template: `
+                <form @submit.prevent="handleSubmit">
+                    <h1>{{title}}</h1>
+                    <input type="email" v-model="email" />
+                    <input type="password" v-model="password" />
+                    <button>Log in</button>
+                </form>
+            `,
+            data(){
                 return{
-                    greeting: 'Hello Vue 3!',
-                    isVisible: false,
+                    title: 'Login Form',
+                    email: '',
+                    password: '',
                 }
             },
-            //method to change toggle box button
             methods: {
-                toggleBox(){
-                    //this. is to get the var
-                    this.isVisible = !this.isVisible
-                },
-
-                /*
-                without passing variables in method parameter
-                greet(){
-                    console.log(this.greeting)
-                }
-                */
-
-                // passing variables
-                greet(greeting) {
-                    console.log(greeting)
+                handleSubmit(){
+                    console.log(this.email, this.password)
                 }
             }
         })
-        // Mount the app to the '#app' element
-        app.mount('#app')
+
+        app.mount("#app");
     </script>
-</body>
+    </body>
 </html>
