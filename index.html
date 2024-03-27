@@ -1,121 +1,67 @@
 <!DOCTYPE html>
-    <head>
+<head>
     <title>Vue 3 Basics</title>
     <style>
-        .box {
-        background-color: purple;
-        height: 200px;
-        width: 200px;
-        }
-        .box.two {
-        background-color: red;
-        }
-        .box.three {
-        background-color: blue;
-        }
-        [v-cloak] {
-        display: none;
-        }
-        /* style for input form */
-        input{
-            margin: 10px;
-            display: block;
+        .box{
+            background-color: purple;
+            height: 200px;
+            width: 200px;
         }
     </style>
-    </head>
-    <body>
-    <div id="app" v-cloak>
-        <login-form />
-
-        <hr />
-
+</head>
+<body>
+    <div id="app">
         <button @click="toggleBox">Toggle Box</button>
-        <div v-if="isVisible" class="box"></div>
+        <test-box v-if="isVisible" class="box"></div>
     </div>
+
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         let app = Vue.createApp({
-        data: function () {
-            return {
-            greeting: "Hello Vue 3!",
-            isVisible: false,
-            };
-        },
-        methods: {
-            toggleBox() {
-            this.isVisible = !this.isVisible;
-            },
-            greet(greeting) {
-            console.log(greeting);
-            },
-        },
-        })
-
-        app.component('login-form',{
-            template: `
-                <form @submit.prevent="handleSubmit">
-                    <h1>{{title}}</h1>
-                    <custom-input
-                        v-for="(input, i) in inputs"
-                        :key="i"
-                        v-model="input.value"
-                        :label="input.label"
-                        :type="input.type"
-                    />
-                    <button>Log in</button>
-                </form>
-            `,
-            component:['custom-input'],
-            data(){
+            data: function(){
                 return{
-                    title: 'Login Form',
-                    //array of data
-                    inputs: [
-                        {
-                            label: 'Email',
-                            value: '',
-                            type: 'email',
-                        },
-                        {
-                            label: 'Password',
-                            value: '',
-                            type: 'password',
-                        }
-                    ],
+                    isVisible: false,
                 }
             },
             methods: {
-                handleSubmit(){
-                    console.log(this.inputs[0].value, this.inputs[1].value)
-                }
+                toggleBox(){
+                    //this. is to get the var
+                    this.isVisible = !this.isVisible
+                },
+            },
+            //lifecyle hooks update because isVisible value is updated
+            updated(){
+                console.log('update')
             }
         })
-        app.component('custom-input', {
+        app.component('test-box', {
             template: `
-                <label>
-                    {{label}}
-                    <input type="type" v-model="inputValue">
-                </label>
+                <div class="box"></div>
             `,
-            props: ['label','type', 'modelValue'],
-            computed: {
-                inputValue: {
-                    get(){
-                        return this.modelValue
-                    },
-                    set(value){
-                        // emit events that other component can listen to
-                        this.$emit('update:modelValue', value)
-                    },
-                }
+            /*
+                lifecycle hook example
+                usage:
+                    1. Check if user authorized
+                    2. API calls (created n mounted)
+                    3. Create/Remove events (initialize event, unmounted 2 clean up events)
+                    4. Get/Clean up Data
+            */
+
+            // when the component is create
+            created(){
+                console.log('created')
             },
-            // data(){
-            //     return{
-            //         inputValue: ''
-            //     }
-            // }
+            // when the component is mounted in the display
+            mounted(){
+                console.log('mounted')
+            },
+            // when the component is unmounted in the display
+            unmounted(){
+                console.log('unmounted')
+            },
         })
-        app.mount("#app");
+        // Mount the app to the '#app' element
+        app.mount('#app')
     </script>
-    </body>
+</body>
 </html>
